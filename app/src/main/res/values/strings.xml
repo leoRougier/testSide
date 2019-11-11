@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Test Side</string>
+    <string name="map">Map</string>
+
 </resources>

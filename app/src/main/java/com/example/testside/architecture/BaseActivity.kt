@@ -4,21 +4,18 @@ import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-abstract class BaseActivity<P : BasePresenter<*>> : DaggerAppCompatActivity(), BaseView {
-
-    @Inject
-    lateinit var mPresenter: P
+abstract class BaseActivity : DaggerAppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter.onViewAttach(this)
-        lifecycle.addObserver(mPresenter)
+       /* mPresenter.onViewAttach(this)
+        lifecycle.addObserver(mPresenter)*/
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        lifecycle.removeObserver(mPresenter)
+       // lifecycle.removeObserver(mPresenter)
     }
 
 }
