@@ -1,10 +1,7 @@
 package com.example.testside.config
 
 import android.app.Application
-import com.example.testside.config.module.ActivitiesBindingModule
-import com.example.testside.config.module.ApiModule
-import com.example.testside.config.module.FragmentBindingModule
-import com.example.testside.config.module.PresenterModule
+import com.example.testside.config.module.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -15,22 +12,27 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
+        AppModule::class,
         ActivitiesBindingModule::class,
         FragmentBindingModule::class,
         ApiModule::class,
-        PresenterModule::class
+        PresenterModule::class,
+        ServiceModule::class,
+        ManagerModule::class
     ]
 )
 
 /*interface AppComponent : AndroidInjector<App> {
     @Component.Builder
-    interface Builder {
-        @BindsInstance
-        fun create(app: Application): Builder
-
-        fun build(): AppComponent
-    }*/
+    abstract class Buil*/
 interface AppComponent : AndroidInjector<App> {
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<App>()
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+
+        fun build(): AppComponent
+    }
 }
+
+

@@ -1,26 +1,61 @@
 package com.example.testside.app.map.mapfragment
 
+import android.util.Log
 import com.example.testside.architecture.BasePresenter
+import com.example.testside.manager.ToiletManager
+import com.example.testside.model.Record
+import com.example.testside.model.Toilets
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterManager
 
-class MapFragmentPresenter:BasePresenter<MapFragmentView>() {
 
-    val ileDeFranceLatLng = LatLng(48.864716, 2.349014)
+class MapFragmentPresenter(private val toiletManager: ToiletManager) :
+    BasePresenter<MapFragmentView>() {
+
+    private val mIleDeFranceLatLng = LatLng(48.864716, 2.349014)
+    private var mClusterManager: ClusterManager<Record>? = null
+
 
     fun initMap(map: GoogleMap) {
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
-
-       // mMap.clear() //clear old markers
-
+        map.clear()
         val cameraPosition = CameraPosition.builder()
-            .target(ileDeFranceLatLng)
+            .target(mIleDeFranceLatLng)
             .zoom(10f)
             .bearing(0f)
             .tilt(45f)
             .build()
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 10000, null)
     }
+
+    fun getToilets() {
+        toiletManager.getToilets()
+            .doOnSubscribe { lifecycleDisposable(it) }
+            .subscribe({ toilets: Toilets ->
+                Log.i("toilets", toilets.toString())
+
+                clusterAddItem(toilets.records)
+            }, {
+                view?.error()
+            })
+    }
+
+    fun clusterAddItem(records: List<Record>?) {
+        mClusterManager?.addItems(records)
+        mClusterManager?.cluster()
+    }
+
+    fun setUpClusterManager(
+        clusterManager: ClusterManager<Record>,
+        googleMap: GoogleMap
+    ) {
+        mClusterManager = clusterManager
+        googleMap.setOnInfoWindowClickListener(mClusterManager);
+        googleMap.setInfoWindowAdapter(clusterManager.getMarkerManager())
+        googleMap.setOnCameraIdleListener(clusterManager)
+    }
+
 }

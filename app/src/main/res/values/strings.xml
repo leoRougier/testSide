@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Test Side</string>
     <string name="map">Map</string>
+    <string name="map_error">Une erreur est survenue</string>
 
 </resources>

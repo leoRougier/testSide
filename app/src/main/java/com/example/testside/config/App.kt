@@ -7,17 +7,18 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
 
-class App: DaggerApplication() {
+/*class App: DaggerApplication() {
 
-   /* companion object {
-        @JvmStatic
-        lateinit var component: AppComponent
-    }
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> = DaggerAppComponent
-        .builder()
-        .create(this)
-        .build()*/
-    override fun applicationInjector(): AndroidInjector<out App> {
+    /*override fun applicationInjector(): AndroidInjector<out App> {
        return DaggerAppComponent.builder().create(this)
-   }
+   }*/
+}*/
+class App : DaggerApplication() {
+
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder()
+            .application(this)
+            .build()
+    }
 }
