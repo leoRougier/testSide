@@ -7,4 +7,5 @@ import com.google.maps.android.clustering.ClusterManager
 interface MapFragmentView: BaseView {
     fun error()
 
+    fun clusterAddItem(records: List<Record>?)
 }

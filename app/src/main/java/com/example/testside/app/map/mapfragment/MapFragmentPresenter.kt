@@ -16,8 +16,6 @@ class MapFragmentPresenter(private val toiletManager: ToiletManager) :
     BasePresenter<MapFragmentView>() {
 
     private val mIleDeFranceLatLng = LatLng(48.864716, 2.349014)
-    private var mClusterManager: ClusterManager<Record>? = null
-
 
     fun initMap(map: GoogleMap) {
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
@@ -37,25 +35,9 @@ class MapFragmentPresenter(private val toiletManager: ToiletManager) :
             .subscribe({ toilets: Toilets ->
                 Log.i("toilets", toilets.toString())
 
-                clusterAddItem(toilets.records)
+                view?.clusterAddItem(toilets.records)
             }, {
                 view?.error()
             })
     }
-
-    fun clusterAddItem(records: List<Record>?) {
-        mClusterManager?.addItems(records)
-        mClusterManager?.cluster()
-    }
-
-    fun setUpClusterManager(
-        clusterManager: ClusterManager<Record>,
-        googleMap: GoogleMap
-    ) {
-        mClusterManager = clusterManager
-        googleMap.setOnInfoWindowClickListener(mClusterManager);
-        googleMap.setInfoWindowAdapter(clusterManager.getMarkerManager())
-        googleMap.setOnCameraIdleListener(clusterManager)
-    }
-
 }

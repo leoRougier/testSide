@@ -9,11 +9,13 @@ import com.example.testside.R
 import com.example.testside.adapter.CustomInfoViewAdapter
 import com.example.testside.architecture.BaseFragment
 import com.example.testside.model.Record
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.maps.android.clustering.ClusterManager
 import es.dmoral.toasty.Toasty
 
 class MapFragment : BaseFragment<MapFragmentPresenter>(), MapFragmentView {
+    private var mClusterManager: ClusterManager<Record>? = null
 
 
     override fun onCreateView(
@@ -28,11 +30,10 @@ class MapFragment : BaseFragment<MapFragmentPresenter>(), MapFragmentView {
         mapFragment?.getMapAsync { mMap ->
 
             mPresenter.initMap(mMap)
-            val clusterManager: ClusterManager<Record> = ClusterManager(context, mMap)
-            context?.let { mPresenter.setUpClusterManager(clusterManager, mMap) }
+            mClusterManager = ClusterManager(context, mMap)
+            context?.let { setUpClusterManager(mClusterManager!!, mMap) }
             context?.let { mPresenter.getToilets() }
-            clusterManager.markerCollection
-                .setOnInfoWindowAdapter(CustomInfoViewAdapter(LayoutInflater.from(context)))
+            mClusterManager?.markerCollection?.setOnInfoWindowAdapter(CustomInfoViewAdapter(LayoutInflater.from(context)))
         }
 
         return rootView
@@ -42,6 +43,21 @@ class MapFragment : BaseFragment<MapFragmentPresenter>(), MapFragmentView {
         activity?.applicationContext?.let {
             Toasty.error(it, getString(R.string.map_error), Toast.LENGTH_SHORT, true).show()
         }
+    }
+
+    override fun clusterAddItem(records: List<Record>?) {
+        mClusterManager?.addItems(records)
+        mClusterManager?.cluster()
+    }
+
+    fun setUpClusterManager(
+        clusterManager: ClusterManager<Record>,
+        googleMap: GoogleMap
+    ) {
+        mClusterManager = clusterManager
+        googleMap.setOnInfoWindowClickListener(mClusterManager);
+        googleMap.setInfoWindowAdapter(clusterManager.getMarkerManager())
+        googleMap.setOnCameraIdleListener(clusterManager)
     }
 }
 

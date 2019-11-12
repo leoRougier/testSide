@@ -1,5 +1,6 @@
 package com.example.testside.config.module
 
+import com.example.testside.app.map.listfragment.ListFragment
 import com.example.testside.app.map.mapfragment.MapFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -9,4 +10,7 @@ abstract class FragmentBindingModule {
 
     @ContributesAndroidInjector
     abstract fun mapFragment () : MapFragment
+
+    @ContributesAndroidInjector
+    abstract fun listFragment () : ListFragment
 }
