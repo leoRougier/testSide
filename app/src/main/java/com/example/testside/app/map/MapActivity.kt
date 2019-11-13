@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_map.*
 import java.security.AccessController.getContext
 
 class MapActivity : BaseActivity() {
-
     private val tagMapFragment = "MAP_FRAGMENT"
     private val tagListFragment = "LIST_FRAGMENT"
 
@@ -24,11 +23,21 @@ class MapActivity : BaseActivity() {
         map_activity_fab.setOnClickListener {
             if (getVisibleFragment(tagMapFragment)) {
                 openFragment(ListFragment(), tagListFragment)
-                map_activity_fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_maps));
+                map_activity_fab.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.ic_maps
+                    )
+                );
 
-            }else{
+            } else {
                 openFragment(MapFragment(), tagMapFragment)
-                map_activity_fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_list));
+                map_activity_fab.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.ic_list
+                    )
+                );
 
             }
         }
