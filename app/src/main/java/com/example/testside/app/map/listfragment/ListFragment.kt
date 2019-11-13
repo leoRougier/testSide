@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.testside.R
 import com.example.testside.adapter.ToiletListAdapter
 import com.example.testside.architecture.BaseFragment
@@ -29,7 +30,12 @@ class ListFragment : BaseFragment<ListFragmentPresenter>(), ListFragmentView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mPresenter.getToilets()
+        mPresenter.getCachedtoilet()
+        fragment_list_swipeContainer.setOnRefreshListener {
+            mAdapter.clear()
+            mPresenter.getCachedtoilet()
+            fragment_list_swipeContainer.isRefreshing = false
+        }
     }
 
     override fun showToilet(records: List<Record>?) {
@@ -37,7 +43,6 @@ class ListFragment : BaseFragment<ListFragmentPresenter>(), ListFragmentView {
         fragment_list_rcv_toilets.layoutManager = LinearLayoutManager(context)
         fragment_list_rcv_toilets.adapter = mAdapter
         mAdapter.setItem(records)
-        mAdapter.notifyDataSetChanged()
     }
 
     override fun error() {

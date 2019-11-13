@@ -1,6 +1,6 @@
 package com.example.testside.config.module
 
-import com.example.testside.service.ToiletService
+import com.example.testside.service.ToiletCacheService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -12,6 +12,7 @@ class ServiceModule {
 
     @Provides
     @Singleton
-    fun provideGameService(@Named(ApiModule.API_RETROFIT_CACHE) retrofit: Retrofit): ToiletService =
-        retrofit.create<ToiletService>(ToiletService::class.java)
+    fun provideCachedToiletService(@Named(ApiModule.API_RETROFIT_CACHE) retrofit: Retrofit): ToiletCacheService =
+        retrofit.create<ToiletCacheService>(ToiletCacheService::class.java)
+
 }

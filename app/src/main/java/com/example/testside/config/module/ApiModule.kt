@@ -16,11 +16,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.io.File
-import android.net.NetworkInfo
-import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
-import okhttp3.CacheControl
-import okhttp3.Interceptor
+
 
 
 @Module
@@ -99,77 +95,5 @@ class ApiModule {
     fun provideApiCacheRetrofit(@Named(API_RETROFIT_CACHE_BUILDER) retrofitBuilder: Retrofit.Builder): Retrofit =
         retrofitBuilder.baseUrl("${BuildConfig.BASEURL}").build()
 
-   /* private fun provideCache(): Cache? {
-        var cache: Cache? = null
 
-        try {
-            cache = Cache(
-                File(context.getCacheDir(), "http-cache"),
-                10 * 1024 * 1024
-            ) // 10 MB
-        } catch (e: Exception) {
-            //Log.e(TAG, "Could not create Cache!")
-        }
-
-        return cache
-    }*/
-
-   /* private fun provideCacheInterceptor(): Interceptor {
-        return { chain ->
-            val response = chain.proceed(chain.request())
-
-            val cacheControl: CacheControl
-
-            if (isConnected()) {
-                cacheControl = CacheControl.Builder()
-                    .maxAge(0, TimeUnit.SECONDS)
-                    .build()
-            } else {
-                cacheControl = CacheControl.Builder()
-                    .maxStale(7, TimeUnit.DAYS)
-                    .build()
-            }
-
-            response.newBuilder()
-                .removeHeader(HEADER_PRAGMA)
-                .removeHeader(HEADER_CACHE_CONTROL)
-                .header(HEADER_CACHE_CONTROL, cacheControl.toString())
-                .build()
-
-        }
-    }
-
-    private fun provideOfflineCacheInterceptor(): Interceptor {
-        return { chain ->
-            var request = chain.request()
-
-            if (!isConnected()) {
-                val cacheControl = CacheControl.Builder()
-                    .maxStale(7, TimeUnit.DAYS)
-                    .build()
-
-                request = request.newBuilder()
-                    .removeHeader(HEADER_PRAGMA)
-                    .removeHeader(HEADER_CACHE_CONTROL)
-                    .cacheControl(cacheControl)
-                    .build()
-            }
-
-            chain.proceed(request)
-        }
-    }*/
-
-   /* fun isConnected(): Boolean {
-        try {
-            val e = mContext.getSystemService(
-                Context.CONNECTIVITY_SERVICE
-            ) as android.net.ConnectivityManager
-            val activeNetwork = e.activeNetworkInfo
-            return activeNetwork != null && activeNetwork.isConnectedOrConnecting
-        } catch (e: Exception) {
-            Log.w(TAG, e.toString())
-        }
-
-        return false
-    }*/
 }

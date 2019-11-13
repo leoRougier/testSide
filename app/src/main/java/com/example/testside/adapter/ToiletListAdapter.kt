@@ -22,7 +22,14 @@ class ToiletListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun setItem(items: List<Record>?) {
         items?.let { mItems?.addAll(it) }
+        notifyDataSetChanged()
+
     }
+    fun clear() {
+        mItems?.clear()
+        notifyDataSetChanged()
+    }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ToiletViewHolder) {
@@ -48,51 +55,3 @@ class ToiletListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 }
-
-
-/*class HomeAdapter(listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val mItems: MutableList<Game>? = ArrayList()
-
-    private var mListener: OnItemClickListener? = null
-
-    init {
-        mListener = listener
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return GameViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_game_row, parent, false))
-    }
-
-    override fun getItemCount(): Int = mItems?.size ?: 0
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-        if (holder is GameViewHolder) {
-            val result = mItems?.get(position) as Game
-            holder.bind(result, mListener)
-        }
-    }
-
-    fun setItem(items: MutableList<Game>?) {
-        items?.let { mItems?.addAll(it) }
-    }
-
-    class GameViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        private var view: View = v
-        private lateinit var game: Game
-        private var listener: OnItemClickListener? = null
-
-        fun bind(game: Game, listener: OnItemClickListener?) {
-
-            this.listener = listener
-            this.game = game
-            view.row_game.text = game.name
-            view.row_game.setOnClickListener({
-                if (null != listener) {
-                    listener?.onClick(game)
-                }
-            })
-        }
-    }
-}*/

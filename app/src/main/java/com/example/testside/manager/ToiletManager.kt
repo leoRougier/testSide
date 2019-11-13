@@ -5,5 +5,6 @@ import io.reactivex.Single
 
 interface ToiletManager {
 
-    fun getToilets():Single<Toilets>
+    fun getCachedToilets():Single<Toilets>
+
 }
